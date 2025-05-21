@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chatbot AI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-20px) translateX(10px); }
+    }
+    .floating-shape {
+      animation: float 6s ease-in-out infinite;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 font-sans relative overflow-hidden">
+
+  <!-- Floating Shapes -->
+  <div class="absolute top-10 left-10 w-16 h-16 bg-blue-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-40 left-1/3 w-20 h-20 bg-pink-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-60 right-1/4 w-24 h-24 bg-green-300 rounded-full opacity-20 floating-shape"></div>
+  <div class="absolute bottom-20 left-16 w-14 h-14 bg-purple-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute bottom-32 right-10 w-20 h-20 bg-yellow-300 rounded-full opacity-40 floating-shape"></div>
+  <div class="absolute bottom-10 left-1/2 w-12 h-12 bg-red-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-16 right-16 w-10 h-10 bg-indigo-300 rounded-full opacity-40 floating-shape"></div>
+  <div class="absolute top-1/2 left-10 w-14 h-14 bg-rose-300 rounded-full opacity-20 floating-shape"></div>
+  <div class="absolute top-[30%] left-[45%] w-16 h-16 bg-cyan-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute bottom-[40%] right-[30%] w-12 h-12 bg-emerald-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-[70%] left-[60%] w-10 h-10 bg-orange-300 rounded-full opacity-40 floating-shape"></div>
+  <div class="absolute bottom-[15%] right-[50%] w-14 h-14 bg-teal-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-[10%] right-[40%] w-16 h-16 bg-fuchsia-300 rounded-full opacity-25 floating-shape"></div>
+  <div class="absolute bottom-[10%] left-[10%] w-12 h-12 bg-lime-300 rounded-full opacity-20 floating-shape"></div>
+  <div class="absolute top-[85%] right-[10%] w-10 h-10 bg-sky-300 rounded-full opacity-30 floating-shape"></div>
+  <div class="absolute top-[5%] left-[75%] w-14 h-14 bg-amber-300 rounded-full opacity-25 floating-shape"></div>
+
+  <!-- Main Chatbox Container -->
+  <div class="w-full max-w-2xl mx-auto mt-10 bg-white p-4 sm:p-6 rounded-xl shadow-md relative z-10">
+    <h1 class="text-2xl font-bold mb-4 text-center">🧠 Chatbot AI - Sai Pratama</h1>
+
+    <div id="chatBox" class="space-y-4 max-h-[400px] overflow-y-auto mb-6 px-1 sm:px-2">
+      <% messages.forEach((msg, index) => { %>
+        <% if (msg.from === 'ai') { %>
+          <div id="ai-<%= index %>" class="bg-yellow-100 p-3 rounded-md text-sm whitespace-pre-line">
+            <strong class="text-yellow-800">🤖 ai:</strong>
+            <p class="ai-text mt-1 text-gray-800 leading-relaxed px-1 text-justify break-words"><%= msg.text %></p>
+          </div>
+        <% } else { %>
+          <div class="bg-blue-100 p-3 rounded-md text-sm text-right">
+            <strong class="text-blue-800">🧍 user:</strong>
+            <p class="text-gray-800 mt-1 px-1"><%= msg.text %></p>
+          </div>
+        <% } %>
+      <% }) %>
+    </div>
+
+    <form method="POST" action="/chat" class="flex flex-col sm:flex-row gap-2">
+      <input type="text" name="message" placeholder="Tulis pesan lo..." required autocomplete="off"
+        class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-blue-400" />
+      <button
+        class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">Kirim</button>
+    </form>
+  </div>
+
+  <script>
+    // Efek ketik untuk setiap teks AI
+    const aiMessages = document.querySelectorAll('.ai-text');
+    aiMessages.forEach((el) => {
+      const fullText = el.innerText;
+      el.innerText = '';
+      let index = 0;
+      const type = () => {
+        if (index < fullText.length) {
+          el.innerText += fullText[index];
+          index++;
+          setTimeout(type, 10);
+        }
+      };
+      type();
+    });
+
+    // Auto-scroll ke bawah
+    const chatBox = document.getElementById('chatBox');
+    chatBox.scrollTop = chatBox.scrollHeight;
+  </script>
+</body>
+</html>
